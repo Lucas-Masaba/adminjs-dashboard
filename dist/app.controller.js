@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service.js';
 let AppController = class AppController {
+    appService;
     constructor(appService) {
         this.appService = appService;
     }

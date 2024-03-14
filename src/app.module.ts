@@ -1,14 +1,35 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as AdminJSTypeorm from '@adminjs/typeorm';
+import AdminJS from 'adminjs';
 import { AdminModule } from '@adminjs/nestjs';
 import { ConfigModule } from '@nestjs/config';
+import * as dotenv from 'dotenv';
 
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import provider from './admin/auth-provider.js';
 import options from './admin/options.js';
 
+dotenv.config();
+
+AdminJS.registerAdapter({
+  Resource: AdminJSTypeorm.Resource,
+  Database: AdminJSTypeorm.Database,
+});
+
 @Module({
   imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DATABASE_HOST || 'localhost',
+      port: 5433,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: 'postgres',
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
@@ -33,4 +54,4 @@ import options from './admin/options.js';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
