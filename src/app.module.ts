@@ -23,7 +23,7 @@ AdminJS.registerAdapter({
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST || 'localhost',
-      port: 5433,
+      port: 5432,
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: 'postgres',
